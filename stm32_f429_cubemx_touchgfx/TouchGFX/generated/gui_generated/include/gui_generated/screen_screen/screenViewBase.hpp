@@ -9,9 +9,13 @@
 #include <gui/screen_screen/screenPresenter.hpp>
 #include <touchgfx/widgets/Box.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
-#include <touchgfx/widgets/Button.hpp>
+#include <touchgfx/containers/ListLayout.hpp>
+#include <touchgfx/containers/SwipeContainer.hpp>
+#include <touchgfx/containers/Container.hpp>
 #include <touchgfx/containers/clock/AnalogClock.hpp>
+#include <touchgfx/widgets/RadioButton.hpp>
 #include <touchgfx/widgets/ToggleButton.hpp>
+#include <touchgfx/widgets/RadioButtonGroup.hpp>
 
 class screenViewBase : public touchgfx::View<screenPresenter>
 {
@@ -31,9 +35,16 @@ protected:
     touchgfx::Box __background;
     touchgfx::Box box1;
     touchgfx::TextArea textArea1;
-    touchgfx::Button button2;
+    touchgfx::ListLayout listLayout1;
+    touchgfx::SwipeContainer swipeContainer1;
+    touchgfx::Container swipeContainer1Page1;
+    touchgfx::Box box2;
     touchgfx::AnalogClock analogClock1;
+    touchgfx::Container swipeContainer1Page2;
+    touchgfx::Box box3;
+    touchgfx::RadioButton radioButton1;
     touchgfx::ToggleButton toggleButton1;
+    touchgfx::RadioButtonGroup<1> radioButtonGroup1;
 
 private:
 

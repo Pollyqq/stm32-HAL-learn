@@ -13,17 +13,28 @@ screenViewBase::screenViewBase()
     __background.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
 
     box1.setPosition(0, 0, 1024, 600);
-    box1.setColor(touchgfx::Color::getColorFrom24BitRGB(233, 172, 182));
+    box1.setColor(touchgfx::Color::getColorFrom24BitRGB(172, 214, 233));
 
-    textArea1.setXY(354, 359);
+    textArea1.setXY(380, 23);
     textArea1.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(touchgfx::TypedText(T_SINGLEUSEID1));
 
-    button2.setXY(83, 469);
-    button2.setBitmaps(touchgfx::Bitmap(BITMAP_BLUE_BUTTONS_ROUND_EDGE_SMALL_ID), touchgfx::Bitmap(BITMAP_BLUE_BUTTONS_ROUND_EDGE_SMALL_PRESSED_ID));
+    listLayout1.setDirection(touchgfx::SOUTH);
+    listLayout1.setPosition(649, 69, 128, 38);
 
-    analogClock1.setXY(354, 69);
+    swipeContainer1.setXY(181, 133);
+    swipeContainer1.setSwipeCutoff(50);
+    swipeContainer1.setEndSwipeElasticWidth(50);
+
+    swipeContainer1Page1.setWidth(662);
+    swipeContainer1Page1.setHeight(375);
+
+    box2.setPosition(0, 0, 662, 375);
+    box2.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
+    swipeContainer1Page1.add(box2);
+
+    analogClock1.setXY(195, 66);
     analogClock1.setBackground(BITMAP_BLUE_CLOCKS_BACKGROUNDS_CLOCK_STANDARD_BACKGROUND_ID, 116, 116);
     analogClock1.setupSecondHand(BITMAP_BLUE_CLOCKS_HANDS_CLOCK_STANDARD_SECOND_HAND_ID, 3, 66);
     analogClock1.setupMinuteHand(BITMAP_BLUE_CLOCKS_HANDS_CLOCK_STANDARD_MINUTE_HAND_ID, 7, 67);
@@ -31,16 +42,34 @@ screenViewBase::screenViewBase()
     analogClock1.setupHourHand(BITMAP_BLUE_CLOCKS_HANDS_CLOCK_STANDARD_HOUR_HAND_ID, 7, 52);
     analogClock1.setHourHandMinuteCorrection(false);
     analogClock1.initializeTime24Hour(10, 10, 0);
+    swipeContainer1Page1.add(analogClock1);
+    swipeContainer1.add(swipeContainer1Page1);
 
-    toggleButton1.setXY(699, 480);
+    swipeContainer1Page2.setWidth(662);
+    swipeContainer1Page2.setHeight(375);
+
+    box3.setPosition(0, 0, 662, 375);
+    box3.setColor(touchgfx::Color::getColorFrom24BitRGB(221, 209, 36));
+    swipeContainer1Page2.add(box3);
+
+    radioButton1.setXY(121, 117);
+    radioButton1.setBitmaps(touchgfx::Bitmap(BITMAP_BLUE_CHECK_BUTTONS_CHECK_MARK_INACTIVE_ID), touchgfx::Bitmap(BITMAP_BLUE_CHECK_BUTTONS_CHECK_MARK_PRESSED_ID), touchgfx::Bitmap(BITMAP_BLUE_CHECK_BUTTONS_CHECK_MARK_ACTIVE_ID), touchgfx::Bitmap(BITMAP_BLUE_CHECK_BUTTONS_CHECK_MARK_NORMAL_ID));
+    radioButton1.setSelected(false);
+    radioButton1.setDeselectionEnabled(false);
+    swipeContainer1Page2.add(radioButton1);
+
+    toggleButton1.setXY(399, 117);
     toggleButton1.setBitmaps(touchgfx::Bitmap(BITMAP_BLUE_TOGGLEBARS_TOGGLE_ROUND_LARGE_BUTTON_OFF_ID), touchgfx::Bitmap(BITMAP_BLUE_TOGGLEBARS_TOGGLE_ROUND_LARGE_BUTTON_ON_ID));
+    swipeContainer1Page2.add(toggleButton1);
+    swipeContainer1.add(swipeContainer1Page2);
+    swipeContainer1.setSelectedPage(1);
 
     add(__background);
     add(box1);
     add(textArea1);
-    add(button2);
-    add(analogClock1);
-    add(toggleButton1);
+    add(listLayout1);
+    add(swipeContainer1);
+    radioButtonGroup1.add(radioButton1);
 }
 
 void screenViewBase::setupScreen()

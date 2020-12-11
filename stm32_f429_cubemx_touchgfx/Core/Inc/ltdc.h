@@ -56,8 +56,13 @@ void MX_LTDC_Init(void);
 /* USER CODE BEGIN Prototypes */
 	 
 void LTDC_Init(void);
-void LTDC_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint32_t color);
 void LTDC_Clear(uint32_t color);
+
+void LTDC_Draw_Point(uint16_t x,uint16_t y,uint32_t color);//画点函数
+uint32_t LTDC_Read_Point(uint16_t x,uint16_t y);			//读点函数
+
+void LTDC_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint32_t color);			//矩形单色填充函数
+void LTDC_Color_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint16_t *color);	//矩形彩色填充函数
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

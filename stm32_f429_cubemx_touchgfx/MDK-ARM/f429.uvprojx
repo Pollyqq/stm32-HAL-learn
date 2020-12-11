@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                            ../Drivers/STM32F4xx_HAL_Driver/Inc;                            ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                            ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                            ../Drivers/CMSIS/Include;     ../TouchGFX/App;     ../TouchGFX/target/generated;     ../TouchGFX/target;     ../Middlewares/Third_Party/FreeRTOS/Source/include;     ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;     ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;  ../middlewares/st/touchgfx/framework/include;  ../touchgfx/generated/fonts/include;  ../touchgfx/generated/gui_generated/include;  ../touchgfx/generated/images/include;  ../touchgfx/generated/texts/include;  ../touchgfx/gui/include</IncludePath>
+              <IncludePath>../Core/Inc;                                 ../Drivers/STM32F4xx_HAL_Driver/Inc;                                 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                                 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                                 ../Drivers/CMSIS/Include;          ../TouchGFX/App;          ../TouchGFX/target/generated;          ../TouchGFX/target;          ../Middlewares/Third_Party/FreeRTOS/Source/include;          ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;          ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;     ../middlewares/st/touchgfx/framework/include;     ../touchgfx/generated/fonts/include;     ../touchgfx/generated/gui_generated/include;     ../touchgfx/generated/images/include;     ../touchgfx/generated/texts/include;     ../touchgfx/gui/include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -392,6 +392,21 @@
         <Group>
           <GroupName>Application/User/Core</GroupName>
           <Files>
+            <File>
+              <FileName>ft5206.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\ft5206.c</FilePath>
+            </File>
+            <File>
+              <FileName>siic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\siic.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\touch.c</FilePath>
+            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
@@ -758,14 +773,24 @@
               <FilePath>../touchgfx/generated/fonts/src/generatedfont.cpp</FilePath>
             </File>
             <File>
-              <FileName>image_Blue_Buttons_Round_Edge_small.cpp</FileName>
+              <FileName>image_Blue_Check_buttons_Check_mark_active.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_buttons_round_edge_small.cpp</FilePath>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_check_buttons_check_mark_active.cpp</FilePath>
             </File>
             <File>
-              <FileName>image_Blue_Buttons_Round_Edge_small_pressed.cpp</FileName>
+              <FileName>image_Blue_Check_buttons_Check_mark_inactive.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_buttons_round_edge_small_pressed.cpp</FilePath>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_check_buttons_check_mark_inactive.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>image_Blue_Check_buttons_Check_mark_normal.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_check_buttons_check_mark_normal.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>image_Blue_Check_buttons_Check_mark_pressed.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_check_buttons_check_mark_pressed.cpp</FilePath>
             </File>
             <File>
               <FileName>image_Blue_Clocks_Backgrounds_clock_standard_background.cpp</FileName>
@@ -786,6 +811,16 @@
               <FileName>image_Blue_Clocks_Hands_clock_standard_second_hand.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>../touchgfx/generated/images/src/__designer/image_blue_clocks_hands_clock_standard_second_hand.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>image_Blue_PageIndicator_dot_indicator_small_highlight.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_pageindicator_dot_indicator_small_highlight.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>image_Blue_PageIndicator_dot_indicator_small_normal.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../touchgfx/generated/images/src/__designer/image_blue_pageindicator_dot_indicator_small_normal.cpp</FilePath>
             </File>
             <File>
               <FileName>image_Blue_Togglebars_Toggle_round_large_button_OFF.cpp</FileName>
