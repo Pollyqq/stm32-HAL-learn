@@ -40,3 +40,5 @@ f429\main.o: ../Core/Inc/ltdc.h
 f429\main.o: ../Core/Inc/usart.h
 f429\main.o: ../Core/Inc/gpio.h
 f429\main.o: ../Core/Inc/fmc.h
+f429\main.o: ../Core/Inc/ft5206.h
+f429\main.o: ../Core/Inc/touch.h

@@ -432,6 +432,21 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>siic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\siic.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>ft5206.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\ft5206.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

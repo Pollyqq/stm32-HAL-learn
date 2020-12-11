@@ -240,19 +240,22 @@ void LTDC_OFF(void)
 // 初始化
 void LTDC_Init(void)
 {
-
     HAL_LTDC_SetWindowPosition(&hltdc,0,0,0);  //设置窗口的位置
     HAL_LTDC_SetWindowSize(&hltdc,PIXELS_W,PIXELS_H,0);//设置窗口大小
-
     LTDC_ON();
-    LTDC_Clear(BLACK);         //清屏
+    LTDC_Clear(0XFFFFFFFF);         //清屏
     return;
 }
 
 // 清屏
 void LTDC_Clear(uint32_t color)
 {
-    LTDC_Fill(0,0,PIXELS_H-1,PIXELS_W-1,color);
+	if(PIXELS_DIR){
+		 LTDC_Fill(0,0,PIXELS_W-1,PIXELS_H-1,color);
+	}else{
+		 LTDC_Fill(0,0,PIXELS_H-1,PIXELS_W-1,color);
+	}
+   
 }
 
 //画点函数

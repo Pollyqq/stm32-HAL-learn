@@ -27,7 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ft5206.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,6 +81,35 @@ void fsmc_sdram_test(uint16_t x,uint16_t y)
  	}					 
 }	
 
+uint8_t fac_us;
+void delay_init(uint8_t SYSCLK)
+{
+
+    HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+    fac_us=SYSCLK; 
+}
+
+void delay_us(uint32_t nus)
+{
+    uint32_t ticks;
+    uint32_t told,tnow,tcnt=0;
+    uint32_t reload=SysTick->LOAD; 
+    ticks=nus*fac_us; 
+    told=SysTick->VAL; 
+    while(1)
+    {
+        tnow=SysTick->VAL;
+        if(tnow!=told)
+        {
+            if(tnow<told)tcnt+=told-tnow;
+            else tcnt+=reload-tnow+told;
+            told=tnow;
+            if(tcnt>=ticks)break; 
+        }
+    };
+}
+
+TouchTypedef mtouch;
 
 
 /* USER CODE END 0 */
@@ -119,23 +148,42 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	MX_SDRAM_InitEx();
-
+	
 	LTDC_Init();
 	LTDC_Clear(WHITE);
-//	HAL_Delay(1000);
-//	LTDC_Clear(YELLOW);
+
 	
-	LTDC_Fill(20,20,100,100,BLACK);
+	delay_init(180);
+	ft5206_init();
+	
+	for(int i = 0;i<200;i++){
+		LTDC_Draw_Point(i,50,BLACK);
+		LTDC_Draw_Point(i,51,BLACK);
+	}
+	mtouch.dir = PIXELS_DIR;
+	mtouch.pix_h = PIXELS_H;
+	mtouch.pix_w = PIXELS_W;
+//	HAL_Delay(1000);
+LTDC_Clear(YELLOW);
+	
+	// LTDC_Fill(20,20,100,100,BLACK);
 	//fsmc_sdram_test(30,170);//²âÊÔSRAMÈÝÁ¿
 	
   /* USER CODE END 2 */
-
+	
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
+		if(ft5206_scan(&mtouch)){
+			printf("x:%d  %y:%d\r\n",mtouch.x[0],mtouch.y[0]);
+			for(int i = 0;i<10;i++){
+				LTDC_Draw_Point(mtouch.x[0]+i,mtouch.y[0]+i,BLACK);
+			}
+			
+		}
+		HAL_Delay(10);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

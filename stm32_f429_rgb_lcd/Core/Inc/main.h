@@ -63,11 +63,11 @@ void Error_Handler(void);
 #define LTDC_BUFF_ADDR 0XC0000000
 #define PIXELS_W 1024
 #define PIXELS_H 600
-#define PIXELS_DIR 0
+#define PIXELS_DIR 1
 #define LCD_BK_Pin GPIO_PIN_5
 #define LCD_BK_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+void delay_us(uint32_t nus);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
