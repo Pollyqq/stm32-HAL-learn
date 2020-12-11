@@ -121,13 +121,11 @@ int main(void)
 	MX_SDRAM_InitEx();
 
 	LTDC_Init();
-	HAL_Delay(1000);
-	LTDC_Clear(YELLOW);
-	HAL_Delay(1000);
-	LTDC_Clear(BLUE);
-	HAL_Delay(1000);
-	LTDC_Clear(RED);
-
+	LTDC_Clear(WHITE);
+//	HAL_Delay(1000);
+//	LTDC_Clear(YELLOW);
+	
+	LTDC_Fill(20,20,100,100,BLACK);
 	//fsmc_sdram_test(30,170);//≤‚ ‘SRAM»›¡ø
 	
   /* USER CODE END 2 */
