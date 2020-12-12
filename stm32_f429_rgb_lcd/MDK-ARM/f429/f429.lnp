@@ -1,5 +1,8 @@
 --cpu=Cortex-M4.fp
 "f429\startup_stm32f429xx.o"
+"f429\siic.o"
+"f429\touch.o"
+"f429\ft5206.o"
 "f429\main.o"
 "f429\gpio.o"
 "f429\dma2d.o"
@@ -8,9 +11,6 @@
 "f429\usart.o"
 "f429\stm32f4xx_it.o"
 "f429\stm32f4xx_hal_msp.o"
-"f429\siic.o"
-"f429\touch.o"
-"f429\ft5206.o"
 "f429\stm32f4xx_hal_dma2d.o"
 "f429\stm32f4xx_hal_rcc.o"
 "f429\stm32f4xx_hal_rcc_ex.o"

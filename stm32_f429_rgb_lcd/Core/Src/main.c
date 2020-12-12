@@ -163,27 +163,23 @@ int main(void)
 	mtouch.dir = PIXELS_DIR;
 	mtouch.pix_h = PIXELS_H;
 	mtouch.pix_w = PIXELS_W;
-//	HAL_Delay(1000);
-LTDC_Clear(YELLOW);
+	//	HAL_Delay(1000);
+
 	
 	// LTDC_Fill(20,20,100,100,BLACK);
 	//fsmc_sdram_test(30,170);//≤‚ ‘SRAM»›¡ø
 	
   /* USER CODE END 2 */
-	
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		 if(ft5206_scan(&mtouch)){
+			 LTDC_Draw_Point(mtouch.x[0],mtouch.y[0],BLACK);
+		 }
     /* USER CODE END WHILE */
-		if(ft5206_scan(&mtouch)){
-			printf("x:%d  %y:%d\r\n",mtouch.x[0],mtouch.y[0]);
-			for(int i = 0;i<10;i++){
-				LTDC_Draw_Point(mtouch.x[0]+i,mtouch.y[0]+i,BLACK);
-			}
 			
-		}
-		HAL_Delay(10);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -238,7 +234,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 108;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 60;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 2;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)

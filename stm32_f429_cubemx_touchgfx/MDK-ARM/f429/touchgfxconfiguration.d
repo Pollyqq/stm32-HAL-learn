@@ -88,6 +88,7 @@ f429\touchgfxconfiguration.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\
 f429\touchgfxconfiguration.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\assert.h
 f429\touchgfxconfiguration.o: ../touchgfx/generated/images/include/BitmapDatabase.hpp
 f429\touchgfxconfiguration.o: ../middlewares/st/touchgfx/framework/include/platform/driver/lcd/LCD16bpp.hpp
+f429\touchgfxconfiguration.o: ../middlewares/st/touchgfx/framework/include/touchgfx/hal/OSWrappers.hpp
 f429\touchgfxconfiguration.o: ../TouchGFX/target/generated/STM32DMA.hpp
 f429\touchgfxconfiguration.o: ../TouchGFX/target/TouchGFXHAL.hpp
 f429\touchgfxconfiguration.o: ../TouchGFX/target/generated/TouchGFXGeneratedHAL.hpp

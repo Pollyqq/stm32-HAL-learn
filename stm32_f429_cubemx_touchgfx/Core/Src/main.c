@@ -113,7 +113,8 @@ int main(void)
 	MX_SDRAM_InitEx();
 
 	LTDC_Init();
-
+	
+	
 
 
   /* USER CODE END 2 */
@@ -185,7 +186,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 108;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 60;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 2;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
