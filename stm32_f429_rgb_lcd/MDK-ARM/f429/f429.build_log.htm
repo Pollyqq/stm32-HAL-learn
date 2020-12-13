@@ -17,7 +17,7 @@ Library Manager: ArmAr.exe V5.06 update 6 (build 750)
 Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
 CPU DLL:         SARMCM3.DLL V5.26.2.0
 Dialog DLL:      DCM.DLL V1.17.2.0
-Target DLL:      Segger\JL2CM3.dll V2.99.31.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.5.0
 Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
@@ -27,33 +27,17 @@ Project File Date:  12/12/2020
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\programfile\productive_soft\keil\ARM\ARMCC\Bin'
 Build target 'f429'
-compiling touch.c...
-compiling gpio.c...
-compiling usart.c...
-compiling stm32f4xx_hal_msp.c...
-compiling siic.c...
-..\Core\Src\siic.c(53): warning:  #188-D: enumerated type mixed with another type
-      HAL_GPIO_WritePin(SIIC_SDA_PORT,SIIC_SDA_PIN,state);
-..\Core\Src\siic.c: 1 warning, 0 errors
-compiling main.c...
-compiling stm32f4xx_it.c...
-compiling dma2d.c...
-compiling fmc.c...
-compiling ft5206.c...
-..\Core\Src\ft5206.c(120): warning:  #177-D: variable "i"  was declared but never referenced
-  	uint8_t i = 0;
-..\Core\Src\ft5206.c(121): warning:  #177-D: variable "touch_state"  was declared but never referenced
-  	uint8_t touch_state = 0;
-..\Core\Src\ft5206.c: 2 warnings, 0 errors
 compiling ltdc.c...
 ../Core/Src/ltdc.c(233): warning:  #188-D: enumerated type mixed with another type
       HAL_GPIO_WritePin(LCD_BK_GPIO_Port,LCD_BK_Pin,1);
 ../Core/Src/ltdc.c(238): warning:  #188-D: enumerated type mixed with another type
       HAL_GPIO_WritePin(LCD_BK_GPIO_Port,LCD_BK_Pin,0);
-../Core/Src/ltdc.c: 2 warnings, 0 errors
+../Core/Src/ltdc.c(337): warning:  #177-D: variable "timeout"  was declared but never referenced
+      uint32_t timeout=0;
+../Core/Src/ltdc.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=9376 RO-data=496 RW-data=32 ZI-data=1231224  
-"f429\f429.axf" - 0 Error(s), 5 Warning(s).
+Program Size: Code=9388 RO-data=496 RW-data=32 ZI-data=1231224  
+"f429\f429.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -76,7 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.2
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

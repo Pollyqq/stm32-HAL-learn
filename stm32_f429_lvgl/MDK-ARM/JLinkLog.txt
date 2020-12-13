@@ -1,0 +1,39 @@
+T0350 079:530 SEGGER J-Link V6.32i Log File (0000ms, 9077ms total)
+T0350 079:530 DLL Compiled: Jul 24 2018 15:19:55 (0000ms, 9077ms total)
+T0350 079:530 Logging started @ 2020-12-12 17:57 (0000ms, 9077ms total)
+T0350 079:530 JLINK_SetWarnOutHandler(...) (0001ms, 9078ms total)
+T0350 079:531 JLINK_OpenEx(...)
+Firmware: J-Link V9 compiled Dec 13 2019 11:14:50
+Hardware: V9.60
+S/N: 63628565
+Feature(s): GDB, RDI, FlashBP, FlashDL, JFlash, RDDI
+TELNET listener socket opened on port 19021WEBSRV 
+Starting webserver (0015ms, 9093ms total)
+T0350 079:531 WEBSRV Webserver running on local port 19080 (0015ms, 9093ms total)
+T0350 079:531   returns O.K. (0015ms, 9093ms total)
+T0350 079:546 JLINK_GetEmuCaps()  returns 0xB9FF7BBF (0000ms, 9093ms total)
+T0350 079:546 JLINK_TIF_GetAvailable(...) (0001ms, 9094ms total)
+T0350 079:547 JLINK_SetErrorOutHandler(...) (0000ms, 9094ms total)
+T0350 079:547 JLINK_ExecCommand("ProjectFile = "G:\stm32_project\stm32\stm32-HAL-learn\stm32_f429_lvgl\MDK-ARM\JLinkSettings.ini"", ...).   returns 0x00 (0001ms, 9095ms total)
+T0350 079:554 JLINK_ExecCommand("Device = STM32F429IGTx", ...). Device "STM32F429IG" selected.  returns 0x00 (0004ms, 9099ms total)
+T0350 079:558 JLINK_ExecCommand("DisableConnectionTimeout", ...).   returns 0x01 (0000ms, 9099ms total)
+T0350 079:558 JLINK_GetHardwareVersion()  returns 0x17700 (0000ms, 9099ms total)
+T0350 079:558 JLINK_GetDLLVersion()  returns 63209 (0000ms, 9099ms total)
+T0350 079:558 JLINK_GetFirmwareString(...) (0000ms, 9099ms total)
+T0350 079:565 JLINK_GetDLLVersion()  returns 63209 (0000ms, 9099ms total)
+T0350 079:565 JLINK_GetCompileDateTime() (0000ms, 9099ms total)
+T0350 079:567 JLINK_GetFirmwareString(...) (0000ms, 9099ms total)
+T0350 079:569 JLINK_GetHardwareVersion()  returns 0x17700 (0000ms, 9099ms total)
+T0350 079:578 JLINK_TIF_Select(JLINKARM_TIF_SWD)  returns 0x00 (0001ms, 9100ms total)
+T0350 079:579 JLINK_SetSpeed(50000) (0001ms, 9101ms total)
+T0350 079:580 JLINK_GetId() >0x10B TIF>Found SW-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF>
+ >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>Active read protected STM32 device detected.
+This could cause problems during flash download.
+Note: Unsecuring will trigger a mass erase of the internal flash. (0027ms, 9128ms total)
+T0350 079:580 Executing default behavior previously saved in the registry.Device will be unsecured now. >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x10B TIF>Found SW-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF>
+ >0x28 TIF>Scanning AP map to find all available APs >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>AP[1]: Stopped AP scan as end of AP map has been reachedAP[0]: AHB-AP (IDR: 0x24770011)Iterating through AP map to find AHB-AP to use >0x42 TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x42 TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF>
+ >0x21 TIF>AP[0]: Core foundAP[0]: AHB-AP ROM base: 0xE00FF000 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>CPUID register: 0x410FC241. Implementer code: 0x41 (ARM)Found Cortex-M4 r0p1, Little endian. -- Max. mem block: 0x00010D68 -- CPU_ReadMem(4 bytes @ 0xE000EDF0) -- CPU_WriteMem(4 bytes @ 0xE000EDF0) -- CPU_ReadMem(4 bytes @ 0xE0002000)FPUnit: 0 code (BP) slots and 0 literal slots -- CPU_ReadMem(4 bytes @ 0xE000EDFC)
+ -- CPU_WriteMem(4 bytes @ 0xE000EDFC) -- CPU_ReadMem(4 bytes @ 0xE0001000) -- CPU_WriteMem(4 bytes @ 0xE0001000) -- CPU_ReadMem(4 bytes @ 0xE000ED88) -- CPU_WriteMem(4 bytes @ 0xE000ED88) -- CPU_ReadMem(4 bytes @ 0xE000ED88) -- CPU_WriteMem(4 bytes @ 0xE000ED88)CoreSight components:ROMTbl[0] @ E00FF000 -- CPU_ReadMem(16 bytes @ 0xE00FF000) >0x0D TIF>  returns 0xFFFFFFFF (0199ms, 9300ms total)
+T0350 080:941 JLINK_Close() >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> (0017ms, 9317ms total)
+T0350 080:941  (0017ms, 9317ms total)
+T0350 080:941 Closed (0017ms, 9317ms total)

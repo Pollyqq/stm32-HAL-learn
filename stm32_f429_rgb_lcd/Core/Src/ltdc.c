@@ -355,22 +355,22 @@ uint32_t psx,psy,pex,pey;	//以LCD面板为基准的坐标系,不随横竖屏变化而变化
     offline=PIXELS_W-(pex-psx+1);
     addr=(LCD_FRAME_BUF_ADDR+PIXELS_BYTE*(PIXELS_W*psy+psx));
 
-    __HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
-    DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
-    DMA2D->CR=DMA2D_R2M;			//寄存器到存储器模式
-    DMA2D->OPFCCR=LTDC_PIXEL_FORMAT_RGB565;	//设置颜色格式
-    DMA2D->OOR=offline;				//设置行偏移
+	__HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
+	DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+	DMA2D->CR=DMA2D_M2M;			//存储器到存储器模式
+	DMA2D->FGPFCCR=0X02;	//设置颜色格式
+	DMA2D->FGOR=0;					//前景层行偏移为0
+	DMA2D->OOR=offline;				//设置行偏移 
 
-		DMA2D->FGMAR=(uint32_t)color;		//源地址
-		DMA2D->OMAR=addr;				//输出存储器地址
-		DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器 
-		DMA2D->CR|=DMA2D_CR_START;					//启动DMA2D
-    while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)	//等待传输完成
-    {
-        timeout++;
-        if(timeout>0X1FFFFF)break;	//超时退出
-    }
-    DMA2D->IFCR|=DMA2D_FLAG_TC;		//清除传输完成标志
+	DMA2D->FGMAR=(uint32_t)color;		//源地址
+	DMA2D->OMAR=addr;				//输出存储器地址
+	DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器 
+	DMA2D->CR|=DMA2D_CR_START;					//启动DMA2D
+	while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)		//等待传输完成
+	{
+
+	} 
+	DMA2D->IFCR|=DMA2D_FLAG_TC;				//清除传输完成标志  
 }
 
 

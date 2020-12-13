@@ -242,9 +242,26 @@ void LTDC_OFF(void)
 {
     HAL_GPIO_WritePin(LCD_BK_GPIO_Port,LCD_BK_Pin,0);
 }
+uint8_t LTDC_Clk_Set(uint32_t pllsain,uint32_t pllsair,uint32_t pllsaidivr)
+{
+	RCC_PeriphCLKInitTypeDef PeriphClkIniture;
+	
+	//LTDC输出像素时钟，需要根据自己所使用的LCD数据手册来配置！
+    PeriphClkIniture.PeriphClockSelection=RCC_PERIPHCLK_LTDC;	//LTDC时钟 	
+	PeriphClkIniture.PLLSAI.PLLSAIN=pllsain;    
+	PeriphClkIniture.PLLSAI.PLLSAIR=pllsair;  
+	PeriphClkIniture.PLLSAIDivR=pllsaidivr;
+	if(HAL_RCCEx_PeriphCLKConfig(&PeriphClkIniture)==HAL_OK)    //配置像素时钟
+    {
+        return 0;   //成功
+    }
+    else return 1;  //失败    
+}
+
 // 初始化
 void LTDC_Init(void)
 {
+		//LTDC_Clk_Set(360,5,RCC_PLLSAIDIVR_2);//设置像素时钟  45Mhz 
     HAL_LTDC_SetWindowPosition(&hltdc,0,0,0);  //设置窗口的位置
     HAL_LTDC_SetWindowSize(&hltdc,PIXELS_W,PIXELS_H,0);//设置窗口大小
     LTDC_ON();
@@ -360,22 +377,22 @@ uint32_t psx,psy,pex,pey;	//以LCD面板为基准的坐标系,不随横竖屏变化而变化
     offline=PIXELS_W-(pex-psx+1);
     addr=(LCD_FRAME_BUF_ADDR+PIXELS_BYTE*(PIXELS_W*psy+psx));
 
-    __HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
-    DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
-    DMA2D->CR=DMA2D_R2M;			//寄存器到存储器模式
-    DMA2D->OPFCCR=LTDC_PIXEL_FORMAT_RGB565;	//设置颜色格式
-    DMA2D->OOR=offline;				//设置行偏移
+	__HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
+	DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+	DMA2D->CR=DMA2D_M2M;			//存储器到存储器模式
+	DMA2D->FGPFCCR=0X02;	//设置颜色格式
+	DMA2D->FGOR=0;					//前景层行偏移为0
+	DMA2D->OOR=offline;				//设置行偏移 
 
-		DMA2D->FGMAR=(uint32_t)color;		//源地址
-		DMA2D->OMAR=addr;				//输出存储器地址
-		DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器 
-		DMA2D->CR|=DMA2D_CR_START;					//启动DMA2D
-    while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)	//等待传输完成
-    {
-        timeout++;
-        if(timeout>0X1FFFFF)break;	//超时退出
-    }
-    DMA2D->IFCR|=DMA2D_FLAG_TC;		//清除传输完成标志
+	DMA2D->FGMAR=(uint32_t)color;		//源地址
+	DMA2D->OMAR=addr;				//输出存储器地址
+	DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器 
+	DMA2D->CR|=DMA2D_CR_START;					//启动DMA2D
+	while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)		//等待传输完成
+	{
+
+	} 
+	DMA2D->IFCR|=DMA2D_FLAG_TC;				//清除传输完成标志  
 }
 
 

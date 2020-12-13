@@ -156,17 +156,20 @@ int main(void)
 	delay_init(180);
 	ft5206_init();
 	
-	for(int i = 0;i<200;i++){
-		LTDC_Draw_Point(i,50,BLACK);
-		LTDC_Draw_Point(i,51,BLACK);
-	}
+
+	LTDC_Fill(20,20,100,100,BLACK);
+	HAL_Delay(1000);
+ LTDC_Fill(20,20,100,100,RED);
+ 
+
+
 	mtouch.dir = PIXELS_DIR;
 	mtouch.pix_h = PIXELS_H;
 	mtouch.pix_w = PIXELS_W;
 	//	HAL_Delay(1000);
 
 	
-	// LTDC_Fill(20,20,100,100,BLACK);
+
 	//fsmc_sdram_test(30,170);//²âÊÔSRAMÈÝÁ¿
 	
   /* USER CODE END 2 */

@@ -1,0 +1,12 @@
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\lv_debug.c
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\lv_debug.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\../lv_conf_internal.h
+f429\lv_debug.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdint.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\../lv_conf_kconfig.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\../../../lv_conf.h
+f429\lv_debug.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdbool.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\lv_mem.h
+f429\lv_debug.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stddef.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\lv_log.h
+f429\lv_debug.o: ..\lvgl\lvgl\src\lv_misc\lv_types.h
+f429\lv_debug.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\string.h

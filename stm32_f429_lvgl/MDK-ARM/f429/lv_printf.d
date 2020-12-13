@@ -1,0 +1,9 @@
+f429\lv_printf.o: ..\lvgl\lvgl\src\lv_misc\lv_printf.c
+f429\lv_printf.o: ..\lvgl\lvgl\src\lv_misc\lv_printf.h
+f429\lv_printf.o: ..\lvgl\lvgl\src\lv_misc\../lv_conf_internal.h
+f429\lv_printf.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdint.h
+f429\lv_printf.o: ..\lvgl\lvgl\src\lv_misc\../lv_conf_kconfig.h
+f429\lv_printf.o: ..\lvgl\lvgl\src\lv_misc\../../../lv_conf.h
+f429\lv_printf.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdarg.h
+f429\lv_printf.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stddef.h
+f429\lv_printf.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdbool.h
