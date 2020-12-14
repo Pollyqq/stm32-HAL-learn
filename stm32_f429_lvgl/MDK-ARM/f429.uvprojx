@@ -1247,6 +1247,11 @@
               <FileType>1</FileType>
               <FilePath>..\lvgl\lvgl_example\src\lv_demo_benchmark\lv_demo_benchmark.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_demo_stress.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\lv_demo_stress\lv_demo_stress.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

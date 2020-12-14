@@ -163,6 +163,7 @@
 "f429\lv_port_indev.o"
 "f429\lv_demo_widgets.o"
 "f429\lv_demo_benchmark.o"
+"f429\lv_demo_stress.o"
 "f429\img_cogwheel_alpha16.o"
 "f429\img_cogwheel_argb.o"
 "f429\img_cogwheel_chroma_keyed.o"

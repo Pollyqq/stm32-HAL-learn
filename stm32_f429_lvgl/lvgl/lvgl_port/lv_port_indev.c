@@ -201,6 +201,8 @@ static bool touchpad_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 
 		uint16_t tx;
 		uint16_t ty;
+	
+		touch_scan();
     /*Save the pressed coordinates and the state*/
     if(touch_get(&tx,&ty)) {
         last_x = tx;

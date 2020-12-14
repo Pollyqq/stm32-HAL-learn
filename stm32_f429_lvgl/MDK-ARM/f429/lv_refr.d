@@ -48,3 +48,4 @@ f429\lv_refr.o: ..\lvgl\lvgl\src\lv_core\../lv_draw/lv_draw_triangle.h
 f429\lv_refr.o: ..\lvgl\lvgl\src\lv_core\../lv_draw/lv_draw_arc.h
 f429\lv_refr.o: ..\lvgl\lvgl\src\lv_core\../lv_font/lv_font_fmt_txt.h
 f429\lv_refr.o: ..\lvgl\lvgl\src\lv_core\../lv_gpu/lv_gpu_stm32_dma2d.h
+f429\lv_refr.o: ..\lvgl\lvgl\src\lv_core\../lv_widgets/lv_label.h

@@ -88,7 +88,7 @@ void lv_port_disp_init(void)
 			static lv_disp_buf_t draw_buf_dsc_1;
 			printf("init \r\n");
 
-			lv_disp_buf_init(&draw_buf_dsc_1, color_buf,color_buf2, 1024*600);   /*Initialize the display buffer*/
+			lv_disp_buf_init(&draw_buf_dsc_1, color_buf2,NULL, 1024*600);   /*Initialize the display buffer*/
 //    /* Example for 2) */
 //    static lv_disp_buf_t draw_buf_dsc_2;
 //    static lv_color_t draw_buf_2_1[LV_HOR_RES_MAX * 10];                        /*A buffer for 10 rows*/
@@ -143,24 +143,24 @@ void lv_port_disp_init(void)
 volatile uint8_t g_gpu_state = 0;
 
 
-//void DMA2D_IRQHandler(void)
-//{
+void DMA2D_IRQHandler(void)
+{
 
-//  if ((DMA2D->ISR & DMA2D_FLAG_TC) != 0U)
-//  {
-//    if ((DMA2D->CR & DMA2D_IT_TC) != 0U)
-//    {
+  if ((DMA2D->ISR & DMA2D_FLAG_TC) != 0U)
+  {
+    if ((DMA2D->CR & DMA2D_IT_TC) != 0U)
+    {
 
-//			DMA2D->CR &= ~DMA2D_IT_TC;
-//			DMA2D->IFCR =DMA2D_FLAG_TC;
-//			
-//			if(g_gpu_state==1){
-//				 g_gpu_state = 0;
-//				 lv_disp_flush_ready(&g_disp_drv);
-//			 }
-//    }
-//  }
-//}
+			DMA2D->CR &= ~DMA2D_IT_TC;
+			DMA2D->IFCR =DMA2D_FLAG_TC;
+			
+			if(g_gpu_state==1){
+				 g_gpu_state = 0;
+				 lv_disp_flush_ready(&g_disp_drv);
+			 }
+    }
+  }
+}
 
 // DMA2D传输完成回调
 static void mDMA2Dcallvack(DMA2D_HandleTypeDef *hdma2d)
@@ -196,8 +196,8 @@ static void dma2d_use_hal_init(void)
 /* Initialize your display and the required peripherals. */
 static void disp_init(void)
 {
-	//dma2d_use_reg_init();
-	dma2d_use_hal_init();
+	dma2d_use_reg_init();
+	//dma2d_use_hal_init();
 }
 
 
@@ -219,8 +219,8 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 	uint32_t addr = LCD_FRAME_BUF_ADDR + 2*(1024*area->y1 + area->x1);
 	
 	
-	// --- 阻塞传输---
-	// 模式
+//	// --- 阻塞传输---
+//	// 模式
 //	DMA2D->CR      = 0x00000000UL | (1 << 9);
 //	// 源地址
 //	DMA2D->FGMAR   = (uint32_t)(uint16_t*)(color_p);
@@ -236,7 +236,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 //	DMA2D->FGPFCCR = LTDC_PIXEL_FORMAT_RGB565;
 //	DMA2D->OPFCCR  = LTDC_PIXEL_FORMAT_RGB565;
 //	
-//	DMA2D->NLR     = (uint32_t)((area->y2-area->y1+1) << 16) | (uint16_t)(area->x2 -area->x1 +1);
+	//DMA2D->NLR     = (area->y2-area->y1+1) | ((area->x2 -area->x1 +1) << 16);
 
 //	/* 启动传输 */
 //	DMA2D->CR   |= DMA2D_CR_START;   
@@ -265,7 +265,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 	DMA2D->OPFCCR  = DMA2D_OUTPUT_RGB565;
 	
 	// 多少行
-	DMA2D->NLR     = (uint32_t)((area->y2-area->y1+1) << 16) | (uint16_t)(area->x2 -area->x1 +1);
+	DMA2D->NLR     = (area->y2-area->y1+1) | ((area->x2 -area->x1 +1) << 16);
 
 	// 开启中断
 	DMA2D->CR |= DMA2D_IT_TC|DMA2D_IT_TE|DMA2D_IT_CE;

@@ -202,7 +202,7 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim6);
 
 	LTDC_Init();
-	LTDC_Clear(RED);
+
 	
 
   touch_init();
@@ -214,11 +214,11 @@ int main(void)
 	
 	//lv_demo_widgets();
 	lv_demo_benchmark();
-	
+	//lv_demo_stress();
 	//sd_fatfs_test();
 	//	HAL_Delay(1000);
 		while(1){
-			touch_scan();
+			
 			lv_task_handler();
 		}
 	// LTDC_Fill(20,20,100,100,BLACK);
