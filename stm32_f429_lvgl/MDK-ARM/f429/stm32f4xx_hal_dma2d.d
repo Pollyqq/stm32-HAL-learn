@@ -1,4 +1,4 @@
-f429\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma2d.c
+f429\stm32f4xx_hal_dma2d.o: ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c
 f429\stm32f4xx_hal_dma2d.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 f429\stm32f4xx_hal_dma2d.o: ../Core/Inc/stm32f4xx_hal_conf.h
 f429\stm32f4xx_hal_dma2d.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h

@@ -12,6 +12,8 @@
 #include "lv_port_disp_template.h"
 
 #include "ltdc.h"
+#include "string.h"
+#include "dma2d.h"
 /*********************
  *      DEFINES
  *********************/
@@ -21,7 +23,7 @@
  **********************/
 
 //变量定义
-#define LTDC_LCD_FRAMEBUF_SIZE		(1024*600*2)		//ltdc.c中ltdc_lcd_framebuf缓冲区的大小
+#define LTDC_LCD_FRAMEBUF_SIZE		(1280*800*2)		//ltdc.c中ltdc_lcd_framebuf缓冲区的大小
 #define COLOR_BUF_SIZE		(LV_HOR_RES_MAX*LV_VER_RES_MAX)	//全屏的大小
 static lv_color_t color_buf[COLOR_BUF_SIZE]	__attribute__((at(LCD_FRAME_BUF_ADDR+LTDC_LCD_FRAMEBUF_SIZE))); //分配到外部SDRAM,需要跳过ltdc.c中分配的帧缓冲区
 static lv_color_t color_buf2[COLOR_BUF_SIZE]	__attribute__((at(LCD_FRAME_BUF_ADDR+LTDC_LCD_FRAMEBUF_SIZE+COLOR_BUF_SIZE*2)));//lvgl的第二个缓冲区,紧跟在第一个缓冲区的后面
@@ -30,6 +32,8 @@ static lv_color_t color_buf2[COLOR_BUF_SIZE]	__attribute__((at(LCD_FRAME_BUF_ADD
  *  STATIC PROTOTYPES
  **********************/
 static void disp_init(void);
+
+lv_disp_drv_t  g_disp_drv;
 
 static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
 #if LV_USE_GPU
@@ -81,8 +85,8 @@ void lv_port_disp_init(void)
      * */
 
     /* Example for 1) */
-    static lv_disp_buf_t draw_buf_dsc_1;
-    
+			static lv_disp_buf_t draw_buf_dsc_1;
+			printf("init \r\n");
 
 			lv_disp_buf_init(&draw_buf_dsc_1, color_buf,color_buf2, 1024*600);   /*Initialize the display buffer*/
 //    /* Example for 2) */
@@ -129,18 +133,76 @@ void lv_port_disp_init(void)
 
     /*Finally register the driver*/
     lv_disp_drv_register(&disp_drv);
+		g_disp_drv = disp_drv;
 }
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+#include "stm32f4xx_hal.h"
+volatile uint8_t g_gpu_state = 0;
+
+
+//void DMA2D_IRQHandler(void)
+//{
+
+//  if ((DMA2D->ISR & DMA2D_FLAG_TC) != 0U)
+//  {
+//    if ((DMA2D->CR & DMA2D_IT_TC) != 0U)
+//    {
+
+//			DMA2D->CR &= ~DMA2D_IT_TC;
+//			DMA2D->IFCR =DMA2D_FLAG_TC;
+//			
+//			if(g_gpu_state==1){
+//				 g_gpu_state = 0;
+//				 lv_disp_flush_ready(&g_disp_drv);
+//			 }
+//    }
+//  }
+//}
+
+// DMA2D传输完成回调
+static void mDMA2Dcallvack(DMA2D_HandleTypeDef *hdma2d)
+{
+	 if(g_gpu_state==1){
+		 g_gpu_state = 0;
+		 lv_disp_flush_ready(&g_disp_drv);
+	 }
+}
+
+// dma2d采用寄存器初始化
+static void dma2d_use_reg_init(void)
+{
+	HAL_NVIC_SetPriority(DMA2D_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA2D_IRQn);
+	__HAL_RCC_DMA2D_CLK_ENABLE();
+}
+
+// dma2D采用HAL初始化
+static void dma2d_use_hal_init(void)
+{
+
+	hdma2d.Instance = DMA2D;
+  hdma2d.Init.Mode = DMA2D_M2M;
+  hdma2d.Init.ColorMode = DMA2D_OUTPUT_RGB565;
+	hdma2d.XferCpltCallback = mDMA2Dcallvack;
+  if (HAL_DMA2D_Init(&hdma2d) != HAL_OK)
+  {
+
+  }
+}
 
 /* Initialize your display and the required peripherals. */
 static void disp_init(void)
 {
-    /*You code here*/
-	  
+	//dma2d_use_reg_init();
+	dma2d_use_hal_init();
 }
+
+
+
+
 
 /* Flush the content of the internal buffer the specific area on the display
  * You can use DMA or any hardware acceleration to do this operation in the background but
@@ -148,8 +210,69 @@ static void disp_init(void)
 static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
 {
     /*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
-		LTDC_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)(color_p));
-    lv_disp_flush_ready(disp_drv);
+	//LTDC_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)(color_p));
+   
+	uint32_t h = area->y2 - area->y1;
+	uint32_t w = area->x2 - area->x1;
+	
+	uint32_t OffLineSrc = 1024 - (area->x2 - area->x1 +1);
+	uint32_t addr = LCD_FRAME_BUF_ADDR + 2*(1024*area->y1 + area->x1);
+	
+	
+	// --- 阻塞传输---
+	// 模式
+//	DMA2D->CR      = 0x00000000UL | (1 << 9);
+//	// 源地址
+//	DMA2D->FGMAR   = (uint32_t)(uint16_t*)(color_p);
+//	// 目标地址
+//	DMA2D->OMAR    = (uint32_t)addr;
+//	
+//	// 输入偏移
+//	DMA2D->FGOR    = 0;
+//	// 输出偏移
+//	DMA2D->OOR     = OffLineSrc;
+//	
+//	/* 前景层和输出区域都采用的RGB565颜色格式 */
+//	DMA2D->FGPFCCR = LTDC_PIXEL_FORMAT_RGB565;
+//	DMA2D->OPFCCR  = LTDC_PIXEL_FORMAT_RGB565;
+//	
+//	DMA2D->NLR     = (uint32_t)((area->y2-area->y1+1) << 16) | (uint16_t)(area->x2 -area->x1 +1);
+
+//	/* 启动传输 */
+//	DMA2D->CR   |= DMA2D_CR_START;   
+
+//	/* 等待DMA2D传输完成 */
+//	while (DMA2D->CR & DMA2D_CR_START) {} 
+//		
+//  lv_disp_flush_ready(disp_drv);
+		
+		
+	// -- 中断传输
+	// 模式
+	DMA2D->CR      = 0x00000000UL | (1 << 9);
+	// 源地址
+	DMA2D->FGMAR   = (uint32_t)(uint16_t*)(color_p);
+	// 目标地址
+	DMA2D->OMAR    = (uint32_t)addr;
+	
+	// 输入偏移
+	DMA2D->FGOR    = 0;
+	// 输出偏移
+	DMA2D->OOR     = OffLineSrc;
+	
+	/* 前景层和输出区域都采用的RGB565颜色格式 */
+	DMA2D->FGPFCCR = DMA2D_OUTPUT_RGB565;
+	DMA2D->OPFCCR  = DMA2D_OUTPUT_RGB565;
+	
+	// 多少行
+	DMA2D->NLR     = (uint32_t)((area->y2-area->y1+1) << 16) | (uint16_t)(area->x2 -area->x1 +1);
+
+	// 开启中断
+	DMA2D->CR |= DMA2D_IT_TC|DMA2D_IT_TE|DMA2D_IT_CE;
+	
+	/* 启动传输 */
+	DMA2D->CR   |= DMA2D_CR_START;   
+	g_gpu_state = 1;
 }
 
 

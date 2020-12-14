@@ -42,3 +42,10 @@ f429\lv_gpu_stm32_dma2d.o: ..\lvgl\lvgl\src\lv_gpu\../lv_core/../lv_draw/lv_img_
 f429\lv_gpu_stm32_dma2d.o: ..\lvgl\lvgl\src\lv_gpu\../lv_core/../lv_draw/../lv_misc/lv_fs.h
 f429\lv_gpu_stm32_dma2d.o: ..\lvgl\lvgl\src\lv_gpu\../lv_core/lv_obj_style_dec.h
 f429\lv_gpu_stm32_dma2d.o: ..\lvgl\lvgl\src\lv_gpu\../lv_core/lv_refr.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Include/core_cm4.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Include/cmsis_version.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+f429\lv_gpu_stm32_dma2d.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h

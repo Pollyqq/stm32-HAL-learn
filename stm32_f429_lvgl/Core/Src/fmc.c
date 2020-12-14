@@ -25,6 +25,7 @@
 
 
 //SDRAM配置参数
+//SDRAM配置参数
 #define SDRAM_MODEREG_BURST_LENGTH_1             ((uint16_t)0x0000)
 #define SDRAM_MODEREG_BURST_LENGTH_2             ((uint16_t)0x0001)
 #define SDRAM_MODEREG_BURST_LENGTH_4             ((uint16_t)0x0002)
@@ -65,62 +66,48 @@ void FMC_SDRAM_ReadBuffer(uint8_t *pBuffer,uint32_t ReadAddr,uint32_t n)
 	}
 }
 
+uint8_t FMC_SDRAM_WriteCMD(uint8_t bankx,uint8_t cmd,uint8_t refresh,uint16_t regval)
+{
+    uint32_t target_bank=0;
+    FMC_SDRAM_CommandTypeDef Command;
+    
+    if(bankx==0) target_bank=FMC_SDRAM_CMD_TARGET_BANK1;       
+    else if(bankx==1) target_bank=FMC_SDRAM_CMD_TARGET_BANK2;   
+    Command.CommandMode=cmd;                //命令
+    Command.CommandTarget=target_bank;      //目标SDRAM存储区域
+    Command.AutoRefreshNumber=refresh;      //自刷新次数
+    Command.ModeRegisterDefinition=regval;  //要写入模式寄存器的值
+    if(HAL_SDRAM_SendCommand(&hsdram1,&Command,0X1000)==HAL_OK) //向SDRAM发送命令
+    {
+        return 0;  
+    }
+    else return 1;    
+}
+
 
 void MX_SDRAM_InitEx(void)
 {
-  __IO uint32_t tmpmrd = 0;
-  
-	FMC_SDRAM_CommandTypeDef Command;
-	
-  /* Step 1: Configure a clock configuration enable command */
-  Command.CommandMode            = FMC_SDRAM_CMD_CLK_ENABLE;
-  Command.CommandTarget          =  FMC_SDRAM_CMD_TARGET_BANK1;
-  Command.AutoRefreshNumber      = 1;
-  Command.ModeRegisterDefinition = 0;
- 
-  /* Send the command */
-  HAL_SDRAM_SendCommand(&hsdram1, &Command,0X1000);
- 
-  /* Step 2: Insert 100 us minimum delay */ 
-  /* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
-  HAL_Delay(1);
+	   uint32_t temp=0;
+    //SDRAM控制器初始化完成以后还需要按照如下顺序初始化SDRAM
+    FMC_SDRAM_WriteCMD(0,FMC_SDRAM_CMD_CLK_ENABLE,1,0); //时钟配置使能
+    HAL_Delay(50);                                  //至少延时200us
+    FMC_SDRAM_WriteCMD(0,FMC_SDRAM_CMD_PALL,1,0);       //对所有存储区预充电
+    FMC_SDRAM_WriteCMD(0,FMC_SDRAM_CMD_AUTOREFRESH_MODE,8,0);//设置自刷新次数 
+    //配置模式寄存器,SDRAM的bit0~bit2为指定突发访问的长度，
+	  //bit3为指定突发访问的类型，bit4~bit6为CAS值，bit7和bit8为运行模式
+	  //bit9为指定的写突发模式，bit10和bit11位保留位
+	  temp=(uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          |	//设置突发长度:1(可以是1/2/4/8)
+              SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |	//设置突发类型:连续(可以是连续/交错)
+              SDRAM_MODEREG_CAS_LATENCY_3           |	//设置CAS值:3(可以是2/3)
+              SDRAM_MODEREG_OPERATING_MODE_STANDARD |   //设置操作模式:0,标准模式
+              SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;     //设置突发写模式:1,单点访问
+    FMC_SDRAM_WriteCMD(0,FMC_SDRAM_CMD_LOAD_MODE,1,temp);   //设置SDRAM的模式寄存器
     
-  /* Step 3: Configure a PALL (precharge all) command */ 
-  Command.CommandMode            = FMC_SDRAM_CMD_PALL;
-  Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-  Command.AutoRefreshNumber      = 1;
-  Command.ModeRegisterDefinition = 0;
- 
-  /* Send the command */
-  HAL_SDRAM_SendCommand(&hsdram1, &Command, 0X1000);  
-  
-  /* Step 4: Configure an Auto Refresh command */ 
-  Command.CommandMode            = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
-  Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-  Command.AutoRefreshNumber      = 8;
-  Command.ModeRegisterDefinition = 0;
- 
-  /* Send the command */
-  HAL_SDRAM_SendCommand(&hsdram1, &Command, 0X1000);
-  
-  /* Step 5: Program the external memory mode register */
-  tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          |\
-                     SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |\
-                     SDRAM_MODEREG_CAS_LATENCY_3           |\
-                     SDRAM_MODEREG_OPERATING_MODE_STANDARD |\
-                     SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
- 
-  Command.CommandMode            = FMC_SDRAM_CMD_LOAD_MODE;
-  Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-  Command.AutoRefreshNumber      = 1;
-  Command.ModeRegisterDefinition = tmpmrd;
- 
-  /* Send the command */
-  HAL_SDRAM_SendCommand(&hsdram1, &Command, 0X1000);
-  
-  /* Step 6: Set the refresh rate counter */
-  /* Set the device refresh rate */
-  HAL_SDRAM_ProgramRefreshRate(&hsdram1, 683); 
+    //刷新频率计数器(以SDCLK频率计数),计算方法:
+	  //COUNT=SDRAM刷新周期/行数-20=SDRAM刷新周期(us)*SDCLK频率(Mhz)/行数
+    //我们使用的SDRAM刷新周期为64ms,SDCLK=180/2=90Mhz,行数为8192(2^13).
+	  //所以,COUNT=64*1000*90/8192-20=683
+	HAL_SDRAM_ProgramRefreshRate(&hsdram1,683);
 }
 
 /* USER CODE END 0 */
@@ -144,14 +131,14 @@ void MX_FMC_Init(void)
   hsdram1.Init.CASLatency = FMC_SDRAM_CAS_LATENCY_3;
   hsdram1.Init.WriteProtection = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
   hsdram1.Init.SDClockPeriod = FMC_SDRAM_CLOCK_PERIOD_2;
-  hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_DISABLE;
+  hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE;
   hsdram1.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_1;
   /* SdramTiming */
   SdramTiming.LoadToActiveDelay = 2;
   SdramTiming.ExitSelfRefreshDelay = 8;
   SdramTiming.SelfRefreshTime = 6;
   SdramTiming.RowCycleDelay = 6;
-  SdramTiming.WriteRecoveryTime = 4;
+  SdramTiming.WriteRecoveryTime = 2;
   SdramTiming.RPDelay = 2;
   SdramTiming.RCDDelay = 2;
 

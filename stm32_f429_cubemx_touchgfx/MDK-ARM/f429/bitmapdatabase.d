@@ -1,9 +1,0 @@
-f429\bitmapdatabase.o: ../touchgfx/generated/images/src/bitmapdatabase.cpp
-f429\bitmapdatabase.o: ../touchgfx/generated/images/include/BitmapDatabase.hpp
-f429\bitmapdatabase.o: ../middlewares/st/touchgfx/framework/include/touchgfx/hal/Types.hpp
-f429\bitmapdatabase.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\assert.h
-f429\bitmapdatabase.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\stdint.h
-f429\bitmapdatabase.o: ../middlewares/st/touchgfx/framework/include/touchgfx/hal/Config.hpp
-f429\bitmapdatabase.o: ../middlewares/st/touchgfx/framework/include/touchgfx/Bitmap.hpp
-f429\bitmapdatabase.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\cassert
-f429\bitmapdatabase.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\assert.h

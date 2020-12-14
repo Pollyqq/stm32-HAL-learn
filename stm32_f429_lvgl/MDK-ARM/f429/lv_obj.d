@@ -54,3 +54,4 @@ f429\lv_obj.o: ..\lvgl\lvgl\src\lv_core\../lv_draw/lv_draw_arc.h
 f429\lv_obj.o: ..\lvgl\lvgl\src\lv_core\../lv_misc/lv_async.h
 f429\lv_obj.o: ..\lvgl\lvgl\src\lv_core\../lv_misc/lv_gc.h
 f429\lv_obj.o: ..\lvgl\lvgl\src\lv_core\../lv_misc/../lv_draw/lv_img_cache.h
+f429\lv_obj.o: ..\lvgl\lvgl\src\lv_core\../lv_gpu/lv_gpu_stm32_dma2d.h

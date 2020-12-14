@@ -135,3 +135,4 @@ f429\lv_port_disp.o: ../Core/Inc/ft5206.h
 f429\lv_port_disp.o: ../Core/Inc/touch.h
 f429\lv_port_disp.o: ../Core/Inc/sdio.h
 f429\lv_port_disp.o: ../Core/Inc/main.h
+f429\lv_port_disp.o: ../Core/Inc/dma2d.h

@@ -49,6 +49,13 @@ extern LTDC_HandleTypeDef hltdc;
 #define BROWN 			    0XBC40 //棕色
 #define BRRED 			    0XFC07 //棕红色
 #define GRAY  			    0X8430 //灰色
+
+//LCD帧缓冲区首地址,这里定义在SDRAM里面.
+#define LCD_FRAME_BUF_ADDR			0XC0000000
+// 每个像素占用的字节数
+#define PIXELS_BYTE 2
+
+
 /* USER CODE END Private defines */
 
 void MX_LTDC_Init(void);

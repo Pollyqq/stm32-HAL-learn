@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>0</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -327,8 +327,8 @@
             <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>1</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F429xx</Define>
+              <Define>USE_HAL_DRIVER,STM32F429xx,STM32F4</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;..\lvgl;..\lvgl\lvgl;..\lvgl\lvgl_example;..\lvgl\lvgl_port;..\lvgl\lvgl_example\src\lv_demo_benchmark;..\lvgl\lvgl_example\src\lv_demo_keypad_encoder;..\lvgl\lvgl_example\src\lv_demo_music;..\lvgl\lvgl_example\src\lv_demo_printer;..\lvgl\lvgl_example\src\lv_demo_stress</IncludePath>
+              <IncludePath>../Core/Inc;         ../Drivers/STM32F4xx_HAL_Driver/Inc;         ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;         ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;         ../Drivers/CMSIS/Include;         ../FATFS/Target;         ../FATFS/App;         ../Middlewares/Third_Party/FatFs/src;         ..\lvgl;         ..\lvgl\lvgl;         ..\lvgl\lvgl_example;         ..\lvgl\lvgl_port;         ..\lvgl\lvgl_example\src\lv_demo_benchmark;         ..\lvgl\lvgl_example\src\lv_demo_keypad_encoder;         ..\lvgl\lvgl_example\src\lv_demo_music;         ..\lvgl\lvgl_example\src\lv_demo_printer;         ..\lvgl\lvgl_example\src\lv_demo_stress</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -408,6 +408,11 @@
               <FilePath>..\Core\Src\ft5206.c</FilePath>
             </File>
             <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\timer.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -470,7 +475,7 @@
             <File>
               <FileName>stm32f4xx_hal_dma2d.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma2d.c</FilePath>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_rcc.c</FileName>
@@ -1237,6 +1242,61 @@
               <FileType>1</FileType>
               <FilePath>..\lvgl\lvgl_example\src\lv_demo_widgets\lv_demo_widgets.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_demo_benchmark.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\lv_demo_benchmark\lv_demo_benchmark.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lvgl/assert</GroupName>
+          <Files>
+            <File>
+              <FileName>img_cogwheel_alpha16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_cogwheel_alpha16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_argb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_cogwheel_argb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_chroma_keyed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_cogwheel_chroma_keyed.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_indexed16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_cogwheel_indexed16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_cogwheel_rgb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_hand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\img_hand.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_12_compr_az.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\lv_font_montserrat_12_compr_az.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_16_compr_az.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\lv_font_montserrat_16_compr_az.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_28_compr_az.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lvgl_example\src\assets\lv_font_montserrat_28_compr_az.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1249,8 +1309,8 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.2" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.4.0"/>
         <targetInfos>
           <targetInfo name="f429"/>
         </targetInfos>

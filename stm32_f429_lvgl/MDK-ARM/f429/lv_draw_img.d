@@ -41,3 +41,4 @@ f429\lv_draw_img.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include
 f429\lv_draw_img.o: ..\lvgl\lvgl\src\lv_draw\../lv_core/../lv_draw/../lv_misc/lv_printf.h
 f429\lv_draw_img.o: ..\lvgl\lvgl\src\lv_draw\../lv_core/../lv_draw/lv_draw_line.h
 f429\lv_draw_img.o: ..\lvgl\lvgl\src\lv_draw\../lv_core/lv_obj_style_dec.h
+f429\lv_draw_img.o: ..\lvgl\lvgl\src\lv_draw\../lv_gpu/lv_gpu_stm32_dma2d.h

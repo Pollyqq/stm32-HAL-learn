@@ -45,3 +45,4 @@ f429\ltdc.o: ../Core/Inc/touch.h
 f429\ltdc.o: ../Core/Inc/sdio.h
 f429\ltdc.o: ../Core/Inc/main.h
 f429\ltdc.o: ../Core/Inc/dma2d.h
+f429\ltdc.o: D:\programfile\productive_soft\keil\ARM\ARMCC\Bin\..\include\string.h

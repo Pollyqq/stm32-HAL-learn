@@ -22,10 +22,12 @@
 
 /* USER CODE BEGIN 0 */
 #include "dma2d.h"
+#include "string.h"
+
+
 
 //定义最大屏分辨率时,LCD所需的帧缓存数组大小
-uint16_t g_ltdc_framebuf[PIXELS_W][PIXELS_H] __attribute__((at(LCD_FRAME_BUF_ADDR)));
-void LTDC_Layer_Parameter_Config(uint8_t layerx,uint32_t bufaddr,uint8_t pixformat,uint8_t alpha,uint8_t alpha0,uint8_t bfac1,uint8_t bfac2,uint32_t bkcolor);
+uint16_t g_ltdc_framebuf[1280][800] __attribute__((at(LCD_FRAME_BUF_ADDR)));
 
 /* USER CODE END 0 */
 
@@ -42,13 +44,13 @@ void MX_LTDC_Init(void)
   hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AL;
   hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AL;
   hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
-  hltdc.Init.HorizontalSync = 20-1;
+  hltdc.Init.HorizontalSync = 19;
   hltdc.Init.VerticalSync = 2;
-  hltdc.Init.AccumulatedHBP = 20-1+140;
+  hltdc.Init.AccumulatedHBP = 159;
   hltdc.Init.AccumulatedVBP = 22;
-  hltdc.Init.AccumulatedActiveW = 20-1+140+PIXELS_W;
+  hltdc.Init.AccumulatedActiveW = 159+PIXELS_W;
   hltdc.Init.AccumulatedActiveH = 622;
-  hltdc.Init.TotalWidth = 20-1+140+PIXELS_W+160;
+  hltdc.Init.TotalWidth = 159+PIXELS_W+160;
   hltdc.Init.TotalHeigh = 634;
   hltdc.Init.Backcolor.Blue = 0;
   hltdc.Init.Backcolor.Green = 0;
@@ -64,11 +66,11 @@ void MX_LTDC_Init(void)
   pLayerCfg.PixelFormat = LTDC_PIXEL_FORMAT_RGB565;
   pLayerCfg.Alpha = 255;
   pLayerCfg.Alpha0 = 0;
-  pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_CA;
-  pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_CA;
+  pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
+  pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
   pLayerCfg.FBStartAdress = LTDC_BUFF_ADDR;
-  pLayerCfg.ImageWidth = 0;
-  pLayerCfg.ImageHeight = 0;
+  pLayerCfg.ImageWidth = PIXELS_W;
+  pLayerCfg.ImageHeight = PIXELS_H;
   pLayerCfg.Backcolor.Blue = 0;
   pLayerCfg.Backcolor.Green = 0;
   pLayerCfg.Backcolor.Red = 0;
@@ -166,6 +168,9 @@ void HAL_LTDC_MspInit(LTDC_HandleTypeDef* ltdcHandle)
     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+    /* LTDC interrupt Init */
+    HAL_NVIC_SetPriority(LTDC_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(LTDC_IRQn);
   /* USER CODE BEGIN LTDC_MspInit 1 */
 
 
@@ -218,6 +223,8 @@ void HAL_LTDC_MspDeInit(LTDC_HandleTypeDef* ltdcHandle)
 
     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_11);
 
+    /* LTDC interrupt Deinit */
+    HAL_NVIC_DisableIRQ(LTDC_IRQn);
   /* USER CODE BEGIN LTDC_MspDeInit 1 */
 
   /* USER CODE END LTDC_MspDeInit 1 */
@@ -237,32 +244,17 @@ void LTDC_OFF(void)
     HAL_GPIO_WritePin(LCD_BK_GPIO_Port,LCD_BK_Pin,0);
 }
 
-uint8_t LTDC_Clk_Set(uint32_t pllsain,uint32_t pllsair,uint32_t pllsaidivr)
-{
-	RCC_PeriphCLKInitTypeDef PeriphClkIniture;
-	
-	//LTDC输出像素时钟，需要根据自己所使用的LCD数据手册来配置！
-    PeriphClkIniture.PeriphClockSelection=RCC_PERIPHCLK_LTDC;	//LTDC时钟 	
-	PeriphClkIniture.PLLSAI.PLLSAIN=pllsain;    
-	PeriphClkIniture.PLLSAI.PLLSAIR=pllsair;  
-	PeriphClkIniture.PLLSAIDivR=pllsaidivr;
-	if(HAL_RCCEx_PeriphCLKConfig(&PeriphClkIniture)==HAL_OK)    //配置像素时钟
-    {
-        return 0;   //成功
-    }
-    else return 1;  //失败    
-}
 
 
 // 初始化
 void LTDC_Init(void)
 {
 		
-	  __HAL_RCC_DMA2D_CLK_ENABLE();               //使能DMA2D时钟
-	
-		LTDC_Layer_Parameter_Config(0,0XC0000000,0X02,255,0,6,7,0X000000);//层参数配置
-    HAL_LTDC_SetWindowPosition(&hltdc,0,0,0);  //设置窗口的位置
-    HAL_LTDC_SetWindowSize(&hltdc,PIXELS_W,PIXELS_H,0);//设置窗口大小
+		__HAL_RCC_DMA2D_CLK_ENABLE();               //使能DMA2D时钟
+		__HAL_LTDC_LAYER_ENABLE(&hltdc,0);
+		__HAL_LTDC_LAYER_DISABLE(&hltdc,1);
+		__HAL_LTDC_RELOAD_CONFIG(&hltdc);
+
     LTDC_ON();
     LTDC_Clear(0XFFFFFFFF);         //清屏
     return;
@@ -334,14 +326,19 @@ void LTDC_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint32_t color)
     addr=(LCD_FRAME_BUF_ADDR+PIXELS_BYTE*(PIXELS_W*psy+psx));
 
     __HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
-    DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+    //DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+		
+		
     DMA2D->CR=DMA2D_R2M;			//寄存器到存储器模式
+		// 设置 DMA2D 采用寄存器往存储器传输数据模式，即 DMA2D 将 OCOLR 寄存器设置颜色值填充到存储器里面。
     DMA2D->OPFCCR=LTDC_PIXEL_FORMAT_RGB565;	//设置颜色格式
+		
     DMA2D->OOR=offline;				//设置行偏移
 
     DMA2D->OMAR=addr;				//输出存储器地址
     DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器
     DMA2D->OCOLR=color;						//设定输出颜色寄存器
+		
     DMA2D->CR|=DMA2D_CR_START;				//启动DMA2D
     while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)	//等待传输完成
     {
@@ -350,38 +347,10 @@ void LTDC_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint32_t color)
     DMA2D->IFCR|=DMA2D_FLAG_TC;		//清除传输完成标志
 }
 
-//LTDC,基本参数设置.
-//注意:此函数,必须在LTDC_Layer_Window_Config之前设置.
-//layerx:层值,0/1.
-//bufaddr:层颜色帧缓存起始地址
-//pixformat:颜色格式.0,ARGB8888;1,RGB888;2,RGB565;3,ARGB1555;4,ARGB4444;5,L8;6;AL44;7;AL88
-//alpha:层颜色Alpha值,0,全透明;255,不透明
-//alpha0:默认颜色Alpha值,0,全透明;255,不透明
-//bfac1:混合系数1,4(100),恒定的Alpha;6(101),像素Alpha*恒定Alpha
-//bfac2:混合系数2,5(101),恒定的Alpha;7(111),像素Alpha*恒定Alpha
-//bkcolor:层默认颜色,32位,低24位有效,RGB888格式
-//返回值:无
-void LTDC_Layer_Parameter_Config(uint8_t layerx,uint32_t bufaddr,uint8_t pixformat,uint8_t alpha,uint8_t alpha0,uint8_t bfac1,uint8_t bfac2,uint32_t bkcolor)
-{
-	LTDC_LayerCfgTypeDef pLayerCfg;
-	
-	pLayerCfg.WindowX0=0;                       //窗口起始X坐标
-	pLayerCfg.WindowY0=0;                       //窗口起始Y坐标
-	pLayerCfg.WindowX1=PIXELS_W ;          //窗口终止X坐标
-	pLayerCfg.WindowY1=PIXELS_H;         //窗口终止Y坐标
-	pLayerCfg.PixelFormat=pixformat;		    //像素格式
-	pLayerCfg.Alpha=alpha;				        //Alpha值设置，0~255,255为完全不透明
-	pLayerCfg.Alpha0=alpha0;			        //默认Alpha值
-	pLayerCfg.BlendingFactor1=(uint32_t)bfac1<<8;    //设置层混合系数
-	pLayerCfg.BlendingFactor2=(uint32_t)bfac2<<8;	//设置层混合系数
-	pLayerCfg.FBStartAdress=bufaddr;	        //设置层颜色帧缓存起始地址
-	pLayerCfg.ImageWidth=PIXELS_W;        //设置颜色帧缓冲区的宽度    
-	pLayerCfg.ImageHeight=PIXELS_H;      //设置颜色帧缓冲区的高度
-	pLayerCfg.Backcolor.Red=(uint8_t)(bkcolor&0X00FF0000)>>16;   //背景颜色红色部分
-	pLayerCfg.Backcolor.Green=(uint8_t)(bkcolor&0X0000FF00)>>8;  //背景颜色绿色部分
-	pLayerCfg.Backcolor.Blue=(uint8_t)bkcolor&0X000000FF;        //背景颜色蓝色部分
-	HAL_LTDC_ConfigLayer(&hltdc,&pLayerCfg,layerx);   //设置所选中的层
-}  
+ 
+
+
+
 
 //矩形彩色填充函数
 void LTDC_Color_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint16_t *color)
@@ -405,19 +374,27 @@ void LTDC_Color_Fill(uint16_t sx,uint16_t sy,uint16_t ex,uint16_t ey,uint16_t *c
         pex=ey;
         pey=PIXELS_H-sx-1;
     }
+		
     offline=PIXELS_W-(pex-psx+1);
     addr=(LCD_FRAME_BUF_ADDR+PIXELS_BYTE*(PIXELS_W*psy+psx));
 
 	__HAL_RCC_DMA2D_CLK_ENABLE();	//使能DM2D时钟
-	DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+	//DMA2D->CR&=~(DMA2D_CR_START);	//先停止DMA2D
+		
 	DMA2D->CR=DMA2D_M2M;			//存储器到存储器模式
-	DMA2D->FGPFCCR=0X02;	//设置颜色格式
+
+		
+	DMA2D->FGMAR=(uint32_t)color;		//源地址
+	DMA2D->OMAR=addr;				//输出存储器地址
+		
 	DMA2D->FGOR=0;					//前景层行偏移为0
 	DMA2D->OOR=offline;				//设置行偏移 
 
-	DMA2D->FGMAR=(uint32_t)color;		//源地址
-	DMA2D->OMAR=addr;				//输出存储器地址
+	DMA2D->FGPFCCR=0X02;	//设置颜色格式
+	DMA2D->OPFCCR  = LTDC_PIXEL_FORMAT_RGB565;
+		
 	DMA2D->NLR=(pey-psy+1)|((pex-psx+1)<<16);	//设定行数寄存器 
+		
 	DMA2D->CR|=DMA2D_CR_START;					//启动DMA2D
 	while((DMA2D->ISR&(DMA2D_FLAG_TC))==0)		//等待传输完成
 	{

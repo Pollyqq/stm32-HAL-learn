@@ -55,7 +55,7 @@ extern LTDC_HandleTypeDef hltdc;
 // 每个像素占用的字节数
 #define PIXELS_BYTE 2
 
-extern uint16_t g_ltdc_framebuf[PIXELS_W][PIXELS_H] __attribute__((at(LCD_FRAME_BUF_ADDR)));
+
 /* USER CODE END Private defines */
 
 void MX_LTDC_Init(void);
